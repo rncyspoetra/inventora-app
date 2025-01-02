@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int             @id @default(autoincrement())
+  username   String          @unique
+  password   String
+  role       String 
+  branchId   Int? 
+  branch     Branch?         @relation(fields: [branchId], references: [id])
+}
+
+model Product {
+  id         Int              @id @default(autoincrement())
+  name       String           @unique
+  sellPrice  Decimal
+  buyPrice   Decimal
+  categoryId Int              // Foreign key ke Category
+  category   Category         @relation(fields: [categoryId], references: [id])
+  stocks     BranchStock[]
+  sales      Sale[]
+  purchases  Purchase[]
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  products  Product[] // Relasi ke Product
+}
+
+model Branch {
+  id            Int               @id @default(autoincrement())
+  name          String            @unique
+  address       String
+  users         User[]
+  productStocks BranchStock[]
+  sales         Sale[]
+  purchases     Purchase[]
+}
+
+model BranchStock {
+  id            Int      @id @default(autoincrement())
+  productId     Int
+  branchId      Int
+  stockQuantity Int      @default(0)
+  product       Product  @relation(fields: [productId], references: [id])
+  branch        Branch   @relation(fields: [branchId], references: [id])
+  updatedAt     DateTime @updatedAt
+
+  @@unique([productId, branchId])
+}
+
+model Sale {
+  id          Int      @id @default(autoincrement())
+  productId   Int
+  branchId    Int
+  quantity    Int
+  totalAmount Decimal
+  createdAt   DateTime @default(now())
+  product     Product  @relation(fields: [productId], references: [id])
+  branch      Branch   @relation(fields: [branchId], references: [id])
+}
+
+model Purchase {
+  id          Int      @id @default(autoincrement())
+  productId   Int
+  branchId    Int
+  quantity    Int
+  price       Decimal
+  createdAt   DateTime @default(now())
+  product     Product  @relation(fields: [productId], references: [id])
+  branch      Branch   @relation(fields: [branchId], references: [id])
+}

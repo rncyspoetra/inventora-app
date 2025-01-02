@@ -1,0 +1,44 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --primary-color : #87A2FF;
+}
+
+body {
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.bukuUsaha {
+    letter-spacing: 2px;
+}
+
+.bg-purple {
+    background-color: var(--primary-color);
+}
+
+.active .d-flex {
+    background-color: rgba(108,117,125,0.2);
+    opacity: 1;
+    color: var(--primary-color) !important;
+    border-left: 2px solid var(--primary-color);
+}
+
+.sidebar {
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.sidebar::-webkit-scrollbar {
+    display: none;
+}
+
+.card {
+    position: relative;
+    top: -40px;
+    z-index: 1;
+}
+  
